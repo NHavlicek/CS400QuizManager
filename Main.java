@@ -39,7 +39,8 @@ public class Main extends Application {
 	 * 
 	 * TODO more to come
 	 */
-	public Scene home, quizHome, startQuizzing, confirmationExit, addQuestionScreen, quizzingScreen;
+	public Scene home, quizHome, startQuizzing, confirmationExit, addQuestionScreen, quizzingScreen,
+	saveScreen, loadScreen;
 	public QuestionBank allQuestions;
 	public Insets buttonSpacing = new Insets(15, 12, 15, 12); // spacing for buttons (standard)
 	public HashSet<String> totalTopicsList = new HashSet<String>(); // all topics among all questions
@@ -74,6 +75,14 @@ public class Main extends Application {
 		// add question screen
 		AddQuestionGUI addQ = new AddQuestionGUI(this, primaryStage);
 		addQuestionScreen = new Scene(addQ, 400, 400);
+		
+		// save questions screen
+		SaveGUI saveQuestionsGUI = new SaveGUI(this, primaryStage);
+		saveScreen = new Scene(saveQuestionsGUI, 400, 400);
+		
+		// load questions screen
+		LoadGUI loadQuestionsGUI = new LoadGUI(this, primaryStage);
+		loadScreen = new Scene(loadQuestionsGUI, 400, 400);
 
 		// display the home screen first
 		primaryStage.setScene(home);

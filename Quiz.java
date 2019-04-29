@@ -46,4 +46,12 @@ public class Quiz {
 	public boolean checkAnswer(AnswerChoice userAnswer) {
 		return (questions.get(currQuestion).checkAnswer(userAnswer));
 	}
+	
+	public ArrayList<Question> getQuestions(){
+		return questions;
+	}
+	
+	public Question getCurrQuestion() {
+		return questions.get(currQuestion);
+	}
 }

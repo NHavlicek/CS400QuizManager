@@ -92,7 +92,7 @@ public class SelectionGUI extends BorderPane {
 
     // bottom left display selected topics
     VBox bottomDisplay = new VBox();
-    Text numQuestionsText = new Text("Current number of questions on file: " + main.allQuestions.totalNumQuestions);
+    Text numQuestionsText = new Text("Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
     bottomDisplay.getChildren().addAll(numQuestionsText, selectedTopics);
     setBottom(bottomDisplay);
   }

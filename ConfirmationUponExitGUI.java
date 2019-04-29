@@ -38,7 +38,7 @@ public class ConfirmationUponExitGUI extends BorderPane {
     });
     Button saveAndExitButton = new Button("Save and exit");
     saveAndExitButton.setOnAction(e -> {
-      // save
+      // TODO save
       primaryStage.close();
     });
     confirmExitButtons.getChildren().addAll(saveAndExitButton, exitNoSaveButton);

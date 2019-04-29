@@ -97,13 +97,13 @@ public class QuizzingGUI extends BorderPane {
     RadioButton button;
     Quiz quiz = main.currQuiz;
     ArrayList<Question> questions = quiz.getQuestions();
-    Question question = questions.get(quiz.getCurrQuestion());
+    Question question = quiz.getCurrQuestion();
 
     if (tg.getSelectedToggle() != null) {
       button = (RadioButton) tg.getSelectedToggle();
       try {
         int choice = Integer.parseInt(button.getId());
-        return question.choices.get(choice);
+        return question.getChoices().get(choice);
       } catch (Exception e) {
         return null;
       }
@@ -113,14 +113,14 @@ public class QuizzingGUI extends BorderPane {
 
   public void updateFields(Question currQuestion) {
     // update the fields (e.g. choice1Text, question body, etc);
-    questionBodyLabel = new Label("Question: " + currQuestion.questionText); // Make These to get methods
-    questionTopicLabel = new Label("Topic: " + currQuestion.topic);
+    questionBodyLabel = new Label("Question: " + currQuestion.getQuestionText()); // Make These to get methods
+    questionTopicLabel = new Label("Topic: " + currQuestion.getTopic());
     
     tg = new ToggleGroup();
-    choiceIsCorrect = new RadioButton[currQuestion.choices.size()];
+    choiceIsCorrect = new RadioButton[currQuestion.getChoices().size()];
     for (int i = 0; i < choiceIsCorrect.length; i++) {
       HBox questionRow = new HBox(10);
-      Label choiceText = new Label(currQuestion.choices.get(i).choiceText);//Use getter
+      Label choiceText = new Label(currQuestion.getChoices().get(i).choiceText);//Use getter
       choiceIsCorrect[i] = new RadioButton();
 
       choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with

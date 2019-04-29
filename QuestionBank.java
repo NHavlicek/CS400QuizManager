@@ -38,6 +38,7 @@ public class QuestionBank {
 	   * Load all the questions to the database
 	   */
 	  public void loadQuestions() throws IOException, ParseException {
+		  // TODO probably want a way to let the user specify the filepath
 
 	    System.out.println("start loading");
 
@@ -133,5 +134,14 @@ public class QuestionBank {
 	
 	public int getTotalNumQuestions() {
 		return totalNumQuestions;
+	}
+	
+	/**
+	 * given a file path, save all the questions in this question bank to a json file at the specified
+	 * location
+	 * @param filepath string representation of the file path to be used
+	 */
+	public void saveQuestionsToFile(String filepath) {
+		// TODO implement
 	}
 }
