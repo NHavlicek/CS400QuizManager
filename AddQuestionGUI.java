@@ -1,5 +1,6 @@
 package application;
 
+import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -12,15 +13,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Filename: AddQuestionGUI.java
- * Project: A-Team Quiz Application
- * Team: A-Team 27
- * Authors: Nicholas Havlicek, Murad Jaber, Kevin Kim, Spencer Runde, Dung Vo
+ * Filename: AddQuestionGUI.java Project: A-Team Quiz Application Team: A-Team 27 Authors: Nicholas
+ * Havlicek, Murad Jaber, Kevin Kim, Spencer Runde, Dung Vo
  * 
  * GUI screen to add a question
  */
 public class AddQuestionGUI extends BorderPane {
-  
+  ToggleGroup tg;
+  TextField[] choiceInput;
+
   /**
    * Sets up the GUI for the Add questions screen
    * 
@@ -33,8 +34,8 @@ public class AddQuestionGUI extends BorderPane {
     HBox topRow = new HBox(10);
     VBox topSide = new VBox(0);
     topSide.setPadding(main.buttonSpacing);
-    
-    //Top buttons
+
+    // Top buttons
     Button returnToHome = new Button("Return to Home");
     returnToHome.setOnAction(e -> {
       primaryStage.setScene(main.home);
@@ -44,55 +45,75 @@ public class AddQuestionGUI extends BorderPane {
 
     // question info input
     HBox questionInfoBox = new HBox(10);
-    
+
     Label questionBodyInputLabel = new Label("Question body:");
     Label questionTopicInputLabel = new Label("Question topic:");
     TextArea questionBodyInput = new TextArea();
     TextField questionTopicInput = new TextField();
 
     questionBodyInput.setMaxHeight(50);
-    
+
     questionInfoBox.getChildren().add(questionTopicInputLabel);
     questionInfoBox.getChildren().add(questionTopicInput);
 
     topSide.getChildren().add(questionBodyInputLabel);
     topSide.getChildren().add(questionBodyInput);
     topSide.getChildren().add(questionInfoBox);
-    
+
     // question options
     VBox midPart = new VBox(5);
     midPart.setPadding(main.buttonSpacing);
-   
+
     Label selectRightAnswer = new Label("Select Correct Answer: ");
     midPart.getChildren().add(selectRightAnswer);
-    
-    ToggleGroup tg = new ToggleGroup();
+
+    tg = new ToggleGroup();
+    choiceInput = new TextField[5];
     for (int i = 0; i < 5; i++) {
       HBox questionRow = new HBox(10);
       Label choiceText = new Label("Choice " + (i + 1));
-      TextField choiceInput = new TextField();
+      choiceInput[i] = new TextField();
       RadioButton choiceIsCorrect = new RadioButton();
-      
+
       choiceIsCorrect.setToggleGroup(tg);
-      choiceInput.setMinWidth(290);
+      choiceInput[i].setMinWidth(290);
 
       questionRow.getChildren().add(choiceText);
-      questionRow.getChildren().add(choiceInput);
+      questionRow.getChildren().add(choiceInput[i]);
       questionRow.getChildren().add(choiceIsCorrect);
-      
+
       midPart.getChildren().add(questionRow);
     }
-    
+
     // submit question button
     Button submitQuestion = new Button("Submit Question");
     submitQuestion.setOnAction(e -> {
       String questionBody = questionBodyInput.getText();
       String topic = questionTopicInput.getText();
-      // TODO create functionality of button
-      // Create a new question
-      // Return to home screen or offer chance to submit a new question
+      ArrayList<AnswerChoice> answers = new ArrayList<AnswerChoice>();
+
+      for (int i = 0; i < tg.getToggles().size(); i++) {
+        AnswerChoice choice;
+        String questionText = choiceInput[i].getText();
+        boolean isCorrect = tg.getSelectedToggle() == tg.getToggles().get(i);
+
+        if (questionText != null) {
+          choice = new AnswerChoice(questionText, isCorrect);
+          answers.add(choice);
+        }
+        
+        choiceInput[i].clear();//Cleared after it was read to make clean up easier
+      }
+
+      Question question = new Question(questionBody, topic, answers, null);
+      main.allQuestions.addQuestion(question);
+      primaryStage.setScene(main.home);
+      
+      questionBodyInput.clear();
+      questionTopicInput.clear();
+      tg.getSelectedToggle().setSelected(false);
     });
-    
+
     setTop(topSide);
     setCenter(midPart);
     setBottom(submitQuestion);

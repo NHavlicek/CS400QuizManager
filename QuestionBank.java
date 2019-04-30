@@ -13,9 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import javafx.scene.image.Image;
-
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
@@ -123,6 +121,11 @@ public class QuestionBank {
 		for (int i = 0; i < topicslist.length; ++i) {
 			matchingQuestions.addAll(findAllQuestionsWithTopic(topicslist[i]));
 		}
+
+	    if (matchingQuestions.size() < numQuestions) {
+	      return null; // Invalid number of questions
+	    }
+	    
 		Collections.shuffle(matchingQuestions); // randomize
 		Quiz ret = new Quiz(matchingQuestions.subList(0,numQuestions)); // construct quiz
 		return ret;
