@@ -1,5 +1,11 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -20,7 +26,26 @@ import javafx.stage.Stage;
 public class SelectionGUI extends BorderPane {
 
   int selectedNumQuestions;
+  Button returnToHome;
   ChoiceBox<String> topics;
+  HBox quizHomeOptions;
+  Text selectedTopics;
+  Button addTopic;
+  Button removeTopic;
+  VBox topicSelectionBox;
+  VBox bottomDisplay;
+  Text numQuestionsText;
+
+  public void updateValue(Main main) {
+    List<String> list = new ArrayList<String>();
+    list.addAll(main.totalTopicsList);
+    ObservableList<String> topicList = FXCollections.observableList(list);
+    topics.setItems(topicList);
+    selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
+    topicSelectionBox.getChildren().setAll(topics, addTopic, removeTopic);
+    numQuestionsText.setText(
+        "Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
+  }
 
   /**
    * Sets up the GUI for the quiz selection screen
@@ -48,7 +73,7 @@ public class SelectionGUI extends BorderPane {
       }
       // generate the quiz (stored as fields in Main.java)
       main.currQuiz = main.allQuestions.generateQuiz(main.selectedTopicsList, selectedNumQuestions);
-      
+
       if (main.currQuiz != null && main.currQuiz.getQuestions().size() > 0) {
         primaryStage.setScene(main.quizzingScreen);
       } else {
@@ -61,44 +86,71 @@ public class SelectionGUI extends BorderPane {
     setCenter(centerBox);
 
     // upper options panel
-    Button returnToHome = new Button("Return to Home");
+    returnToHome = new Button("Return to Home");
     returnToHome.setOnAction(e -> {
       primaryStage.setScene(main.home);
     });
-    HBox quizHomeOptions = new HBox(10, returnToHome);
+    quizHomeOptions = new HBox(10, returnToHome);
     quizHomeOptions.setPadding(main.buttonSpacing);
 
     setTop(quizHomeOptions);
 
     // upper right topics selection : display, add, remove. Also bottom right
     // selected topics
-    Text selectedTopics = new Text("Selected Topics: ");
+    selectedTopics = new Text("Selected Topics: ");
     topics = new ChoiceBox<String>();
     if (main.totalTopicsList.size() > 0) {
       topics.getItems().addAll(main.totalTopicsList);
     }
 
-    Button addTopic = new Button("Add Topic");
+    addTopic = new Button("Add Topic");
     addTopic.setOnAction(e -> {
+      
       main.selectedTopicsList.add(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
     });
 
-    Button removeTopic = new Button("Remove Topic");
+    removeTopic = new Button("Remove Topic");
     removeTopic.setOnAction(e -> {
       main.selectedTopicsList.remove(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
     });
 
-    VBox topicSelectionBox = new VBox();
+    topicSelectionBox = new VBox();
     topicSelectionBox.getChildren().addAll(topics, addTopic, removeTopic);
     quizHomeOptions.getChildren().add(topicSelectionBox);
 
     // bottom left display selected topics
-    VBox bottomDisplay = new VBox();
-    Text numQuestionsText = new Text(
+    bottomDisplay = new VBox();
+    numQuestionsText = new Text(
         "Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
     bottomDisplay.getChildren().addAll(numQuestionsText, selectedTopics);
     setBottom(bottomDisplay);
+
+    Thread thread = new Thread(new Runnable() {
+
+      @Override
+      public void run() {
+        Runnable updater = new Runnable() {
+          @Override
+          public void run() {
+            updateValue(main);
+          }
+        };
+
+        while (true) {
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException ex) {
+          }
+          // UI update is run on the Application thread
+          Platform.runLater(updater);
+        }
+      }
+
+    });
+    thread.setDaemon(true);
+    thread.start();
   }
+
 }

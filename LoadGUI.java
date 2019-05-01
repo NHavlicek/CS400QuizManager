@@ -26,22 +26,21 @@ public class LoadGUI extends BorderPane {
     load.setOnAction(e -> {
       try {
         filepath = filePathInput.getText();
-        main.allQuestions.loadQuestions(filepath); // TODO loadQuestions needs file input from here
+        main.allQuestions.loadQuestions(filepath, main); // TODO loadQuestions needs file input from here
         validFilePath = true; // if reached, no exceptions (go to home menu)
       } catch (Exception exc) { // TODO more specific exception handling
         System.out.println("DEBUG: exception in Load");
-        exc.printStackTrace();
         validFilePath = false; // exceptions come from parsing filepath or from filenotfound
         invalidInput.setVisible(true);
       }
       if (validFilePath) {
-
         primaryStage.setScene(main.home); // return home if input valid
       }
     });
     returnHome = new Button("Return to Home");
     returnHome.setOnAction(e -> {
       primaryStage.setScene(main.home);
+      invalidInput.setVisible(false);
       ; // return home
     });
 
