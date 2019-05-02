@@ -63,31 +63,31 @@ public class Main extends Application {
 
     // home screen
     homeScreen = new HomeScreenGUI(this, primaryStage);
-    home = new Scene(homeScreen, 400, 400);
+    home = new Scene(homeScreen, 600, 600);
 
     // main quiz screen
     quizEntry = new SelectionGUI(this, primaryStage);
-    quizHome = new Scene(quizEntry, 400, 400);
+    quizHome = new Scene(quizEntry, 600, 600);
 
     // confirmation upon exit
     confirmExit = new ConfirmationUponExitGUI(this, primaryStage);
-    confirmationExit = new Scene(confirmExit, 400, 400);
+    confirmationExit = new Scene(confirmExit, 600, 600);
 
     // GUI during quizzing TODO implement
     quizMeGUI = new QuizzingGUI(this, primaryStage);
-    quizzingScreen = new Scene(quizMeGUI, 400, 400);
+    quizzingScreen = new Scene(quizMeGUI, 600, 600);
 
     // add question screen
     addQ = new AddQuestionGUI(this, primaryStage);
-    addQuestionScreen = new Scene(addQ, 400, 400);
+    addQuestionScreen = new Scene(addQ, 600, 600);
 
     // save questions screen
     saveQuestionsGUI = new SaveGUI(this, primaryStage);
-    saveScreen = new Scene(saveQuestionsGUI, 400, 400);
+    saveScreen = new Scene(saveQuestionsGUI, 600, 600);
 
     // load questions screen
     loadQuestionsGUI = new LoadGUI(this, primaryStage);
-    loadScreen = new Scene(loadQuestionsGUI, 400, 400);
+    loadScreen = new Scene(loadQuestionsGUI, 600, 600);
 
     // display the home screen first
     primaryStage.setScene(home);
