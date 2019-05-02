@@ -106,8 +106,11 @@ public class AddQuestionGUI extends BorderPane {
       }
 
       Question question = new Question(questionBody, topic, answers, null);
+      main.totalTopicsList.add(topic);
       main.allQuestions.addQuestion(question);
       primaryStage.setScene(main.home);
+      
+      main.updateAll();
       
       questionBodyInput.clear();
       questionTopicInput.clear();

@@ -13,8 +13,7 @@ public class Quiz {
 		currQuestion = 0;
 		numQuestions = list.size();
 		questions = new ArrayList<Question>();
-		// add the questions in the List<Question> object to the data structure
-		// set currQuestion to first question
+		questions.addAll(list);
 	}
 	
 	/**

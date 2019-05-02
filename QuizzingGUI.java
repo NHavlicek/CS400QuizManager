@@ -24,6 +24,7 @@ public class QuizzingGUI extends BorderPane {
   Label questionBodyLabel;
   Label questionTopicLabel;
   RadioButton[] choiceIsCorrect;
+  Label[] choiceText;
   ToggleGroup tg;
   // TODO image
 
@@ -57,15 +58,16 @@ public class QuizzingGUI extends BorderPane {
 
     tg = new ToggleGroup();
     choiceIsCorrect = new RadioButton[5];
+    choiceText = new Label[5];
     for (int i = 0; i < 5; i++) {
       HBox questionRow = new HBox(10);
-      Label choiceText = new Label("Choice " + (i + 1));
+      choiceText[i] = new Label("Choice " + (i + 1));
       choiceIsCorrect[i] = new RadioButton();
 
       choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with
       choiceIsCorrect[i].setToggleGroup(tg);
 
-      questionRow.getChildren().add(choiceText);
+      questionRow.getChildren().add(choiceText[i]);
       questionRow.getChildren().add(choiceIsCorrect[i]);
 
       midPart.getChildren().add(questionRow);
@@ -74,6 +76,7 @@ public class QuizzingGUI extends BorderPane {
     // submit question button
     submitAnswer = new Button("Submit");
     submitAnswer.setOnAction(e -> {
+      updateFields(main.currQuiz.getCurrQuestion());
       AnswerChoice answer = getAnswerChoice(main);
 
       if (answer != null && main.currQuiz.checkAnswer(answer)) {
@@ -113,14 +116,13 @@ public class QuizzingGUI extends BorderPane {
 
   public void updateFields(Question currQuestion) {
     // update the fields (e.g. choice1Text, question body, etc);
-    questionBodyLabel = new Label("Question: " + currQuestion.getQuestionText()); // Make These to get methods
-    questionTopicLabel = new Label("Topic: " + currQuestion.getTopic());
+    questionBodyLabel.setText("Question: " + currQuestion.getQuestionText()); // Make These to get methods
+    questionTopicLabel.setText("Topic: " + currQuestion.getTopic());
     
     tg = new ToggleGroup();
-    choiceIsCorrect = new RadioButton[currQuestion.getChoices().size()];
     for (int i = 0; i < choiceIsCorrect.length; i++) {
       HBox questionRow = new HBox(10);
-      Label choiceText = new Label(currQuestion.getChoices().get(i).choiceText);//Use getter
+      choiceText[i].setText(currQuestion.getChoices().get(i).choiceText);//Use getter
       choiceIsCorrect[i] = new RadioButton();
 
       choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with

@@ -31,7 +31,7 @@ public class Question {
 	    this.QUESTION_TEXT = questionText;
 	    this.TOPIC = topic;
 	    CHOICES = new ArrayList<AnswerChoice>();
-	    for (int i = 0; i < CHOICES.size(); ++i) {
+	    for (int i = 0; i < possibleChoices.size(); ++i) {
 	      CHOICES.add(possibleChoices.get(i));
 	    }
 	    this.IMAGE = image;

@@ -36,13 +36,14 @@ public class LoadGUI extends BorderPane {
       if (validFilePath) {
         primaryStage.setScene(main.home); // return home if input valid
       }
+      
+      main.updateAll();
     });
     returnHome = new Button("Return to Home");
     returnHome.setOnAction(e -> {
-      main.updateAll();
       primaryStage.setScene(main.home);
       invalidInput.setVisible(false);
-      ; // return home
+      // return home
     });
 
     VBox filePathInputBox = new VBox(filePathText, filePathInput);

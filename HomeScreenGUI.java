@@ -22,7 +22,6 @@ public class HomeScreenGUI extends BorderPane {
   public void updateValue(Main main) {
     numQuestionsText.setText(
         "Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
-
   }
 
   /**
@@ -46,12 +45,10 @@ public class HomeScreenGUI extends BorderPane {
     Button homescreenLoad = new Button("Load"); // load a questions list
     homescreenLoad.setOnAction(e -> {
       primaryStage.setScene(main.loadScreen);
-      main.updateAll();
     });
     Button addQuestion = new Button("Add Question");
     addQuestion.setOnAction(e -> {
       primaryStage.setScene(main.addQuestionScreen);
-      main.updateAll();
     });
 
     homeScreenOptions.getChildren().addAll(homescreenExit, homescreenSave, homescreenLoad,
@@ -77,32 +74,6 @@ public class HomeScreenGUI extends BorderPane {
     HBox numQuestionsBox = new HBox(numQuestionsText);
     numQuestionsBox.setAlignment(Pos.BOTTOM_LEFT);
     setBottom(numQuestionsBox);
-
-    // display number of questions loaded or selected in bottom left
-    Thread thread = new Thread(new Runnable() {
-
-      @Override
-      public void run() {
-        Runnable updater = new Runnable() {
-          @Override
-          public void run() {
-            updateValue(main);
-          }
-        };
-
-        while (true) {
-          try {
-            Thread.sleep(100);
-          } catch (InterruptedException ex) {
-          }
-          // UI update is run on the Application thread
-          Platform.runLater(updater);
-        }
-      }
-
-    });
-    thread.setDaemon(true);
-    thread.start();
-  }
+   }
 
 }
