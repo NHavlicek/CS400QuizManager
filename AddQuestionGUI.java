@@ -105,16 +105,20 @@ public class AddQuestionGUI extends BorderPane {
         choiceInput[i].clear();//Cleared after it was read to make clean up easier
       }
 
-      Question question = new Question(questionBody, topic, answers, null);
-      main.totalTopicsList.add(topic);
-      main.allQuestions.addQuestion(question);
-      primaryStage.setScene(main.home);
-      
-      main.updateAll();
-      
+      if (questionBody.length() > 0 && topic.length() > 0 && answers.size() == 5) {
+        Question question = new Question(questionBody, topic, answers, null);
+        main.totalTopicsList.add(topic);
+        main.allQuestions.addQuestion(question);
+        
+        main.updateAll();
+      }
       questionBodyInput.clear();
       questionTopicInput.clear();
-      tg.getSelectedToggle().setSelected(false);
+      if (tg.getSelectedToggle() != null) {
+        tg.getSelectedToggle().setSelected(false);
+      }
+      
+      primaryStage.setScene(main.home);
     });
 
     setTop(topSide);
