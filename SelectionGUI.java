@@ -68,20 +68,18 @@ public class SelectionGUI extends BorderPane {
       try {
         selectedNumQuestions = Integer.parseInt(numQuestionsEntry.getText());
         System.out.println("DEBUG: selected num Questions: " + selectedNumQuestions);
+        // generate the quiz (stored as fields in Main.java)
+        main.currQuiz = main.allQuestions.generateQuiz(main.selectedTopicsList, selectedNumQuestions);
+        // ensure quiz has at least one question and was generated 
+        if (main.currQuiz != null && main.currQuiz.getQuestions().size() > 0) {
+            primaryStage.setScene(main.quizzingScreen);
+            main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
+          } else {
+            System.out.println("Error: Invalid number of questions: " + selectedNumQuestions);
+          }
       } catch (NumberFormatException nE) {
         System.out.println("Please Input a valid number of questions");
       }
-      // generate the quiz (stored as fields in Main.java)
-      main.currQuiz = main.allQuestions.generateQuiz(main.selectedTopicsList, selectedNumQuestions);
-
-      if (main.currQuiz != null && main.currQuiz.getQuestions().size() > 0) {
-        primaryStage.setScene(main.quizzingScreen);
-        main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
-      } else {
-        System.out.println("Error: Invalid number of questions: " + selectedNumQuestions);
-      }
-      
-      //main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
     });
 
     centerBox.getChildren().addAll(quizMe, numQuestionsSelectionBox);
