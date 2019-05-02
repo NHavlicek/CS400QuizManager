@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FilenameFilter;
 import java.util.List;
@@ -148,7 +149,48 @@ public class QuestionBank {
    * 
    * @param filepath string representation of the file path to be used
    */
-  public void saveQuestionsToFile(String filepath) {
-    // TODO implement
+  @SuppressWarnings("unchecked")
+  public void saveQuestionsToFile(String filepath) throws IOException {
+	  JSONObject obj = new JSONObject();
+	  JSONArray allQuestions = new JSONArray();
+	  JSONArray choices;
+	  JSONObject option;
+	  for (Question quest : questionBank) {
+		  
+		  JSONObject question = new JSONObject();
+		  question.put("meta-data", "unused");
+		  question.put("questionText", quest.getQuestionText());
+		  question.put("topic", quest.getTopic());
+		  if (quest.getImage() != null) {
+			  question.put("image", quest.getImage());
+		  } else {
+			  question.put("image", "none");
+		  }
+		  
+		  choices = new JSONArray();
+		  option = new JSONObject();
+		  
+		  for (int i = 0; i < quest.getChoices().size(); i++) {
+			  if (quest.getChoices().get(i).isCorrectChoice) {
+				  choices.add(0, option.put("isCorrect", "T")); 
+				  choices.add(1, option.put("choice", quest.getQuestionText()));
+			  } else {
+				  choices.add(0, option.put("isCorrect", "F")); 
+				  choices.add(1, option.put("choice", quest.getQuestionText()));
+			  }
+			  question.put("choiceArray", choices);
+		  }
+		  allQuestions.add(question);
+	  }
+	  obj.put("questionArray", allQuestions);
+      try (FileWriter file = new FileWriter(filepath)) {
+
+          file.write(obj.toJSONString());
+          file.flush();
+
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+	  
   }
 }
