@@ -7,6 +7,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -26,6 +30,8 @@ public class QuizzingGUI extends BorderPane {
 	RadioButton[] choiceIsCorrect;
 	Label[] choiceText;
 	ToggleGroup tg;
+	ImageView questionImageLocation;
+	Image questionImage;
 	// TODO image
 
 	/**
@@ -42,10 +48,13 @@ public class QuizzingGUI extends BorderPane {
 		topSide.setPadding(main.buttonSpacing);
 
 		// question info input
-
+		questionImageLocation = new ImageView();
+		questionImageLocation.setFitHeight(200);
+		questionImageLocation.setFitWidth(200);
 		questionBodyLabel = new Label("Question: ");
 		questionTopicLabel = new Label("Topic: ");
-
+		
+		topSide.getChildren().add(questionImageLocation);
 		topSide.getChildren().add(questionBodyLabel);
 		topSide.getChildren().add(questionTopicLabel);
 
@@ -82,6 +91,12 @@ public class QuizzingGUI extends BorderPane {
 					main.currQuiz.numCorrect++;
 				}
 				if (main.currQuiz.quizOver()) {
+					Alert totalScore = new Alert(AlertType.INFORMATION);
+					totalScore.setTitle("Total Score");
+					totalScore.setContentText("You got " + main.currQuiz.numCorrect + 
+							" questions correct out of " + main.currQuiz.numQuestions + " possible ("
+									+ (int) main.currQuiz.numCorrect / main.currQuiz.numQuestions*100 + "%)");
+					totalScore.showAndWait();
 					primaryStage.setScene(main.home);
 				} else {
 					updateFields(main.currQuiz.getNextQuestion());
