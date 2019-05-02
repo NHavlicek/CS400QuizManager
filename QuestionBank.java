@@ -155,8 +155,11 @@ public class QuestionBank {
 	  JSONArray allQuestions = new JSONArray();
 	  JSONArray choices;
 	  JSONObject option;
+	  
+	  //Loops through all the questions stored and adds them to to JSON file
 	  for (Question quest : questionBank) {
 		  
+		  //Creates JSON object
 		  JSONObject question = new JSONObject();
 		  question.put("meta-data", "unused");
 		  question.put("questionText", quest.getQuestionText());
@@ -169,7 +172,7 @@ public class QuestionBank {
 		  
 		  choices = new JSONArray();
 		  option = new JSONObject();
-		  
+		  //Loops through the choices of a question and adds them
 		  for (int i = 0; i < quest.getChoices().size(); i++) {
 			  if (quest.getChoices().get(i).isCorrectChoice) {
 				  choices.add(0, option.put("isCorrect", "T")); 
@@ -183,6 +186,8 @@ public class QuestionBank {
 		  allQuestions.add(question);
 	  }
 	  obj.put("questionArray", allQuestions);
+	  
+	  //Saves file to specified file path
       try (FileWriter file = new FileWriter(filepath)) {
 
           file.write(obj.toJSONString());
@@ -190,7 +195,6 @@ public class QuestionBank {
 
       } catch (IOException e) {
           e.printStackTrace();
-      }
-	  
+      }  
   }
 }
