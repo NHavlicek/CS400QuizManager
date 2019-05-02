@@ -43,7 +43,7 @@ public class LoadGUI extends BorderPane {
     returnHome.setOnAction(e -> {
       primaryStage.setScene(main.home);
       invalidInput.setVisible(false);
-      ; // return home
+      // return home
     });
 
     VBox filePathInputBox = new VBox(filePathText, filePathInput);
