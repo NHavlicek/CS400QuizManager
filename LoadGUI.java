@@ -36,6 +36,8 @@ public class LoadGUI extends BorderPane {
       if (validFilePath) {
         primaryStage.setScene(main.home); // return home if input valid
       }
+      
+      main.updateAll();
     });
     returnHome = new Button("Return to Home");
     returnHome.setOnAction(e -> {
