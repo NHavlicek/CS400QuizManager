@@ -154,7 +154,10 @@ public class QuizzingGUI extends BorderPane {
   public void updateFields(Question currQuestion) {
     // update the fields (e.g. choice1Text, question body, etc);
     if (currQuestion.getImage() != null) {
+      questionImageLocation.setVisible(true);
       questionImageLocation.setImage(SwingFXUtils.toFXImage(currQuestion.getImage(), null));
+    } else {
+      questionImageLocation.setVisible(false);
     }
     questionBodyLabel.setText("Question: " + currQuestion.getQuestionText()); // Make These to get
                                                                               // methods
