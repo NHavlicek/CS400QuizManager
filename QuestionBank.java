@@ -174,12 +174,12 @@ public class QuestionBank {
 		  option = new JSONObject();
 		  //Loops through the choices of a question and adds them
 		  for (int i = 0; i < quest.getChoices().size(); i++) {
-			  if (quest.getChoices().get(i).isCorrectChoice) {
+			  if (quest.getChoices().get(i).getIsCorrect()) {
 				  choices.add(0, option.put("isCorrect", "T")); 
-				  choices.add(1, option.put("choice", quest.getQuestionText()));
+				  choices.add(1, option.put("choiceArray", quest.getChoices().get(i).getChoiceText()));
 			  } else {
 				  choices.add(0, option.put("isCorrect", "F")); 
-				  choices.add(1, option.put("choice", quest.getQuestionText()));
+				  choices.add(1, option.put("choice", quest.getChoices().get(i).getChoiceText()));
 			  }
 			  question.put("choiceArray", choices);
 		  }

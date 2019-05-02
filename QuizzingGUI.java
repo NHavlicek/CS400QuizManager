@@ -130,7 +130,7 @@ public class QuizzingGUI extends BorderPane {
 		tg = new ToggleGroup();
 		for (int i = 0; i < choiceIsCorrect.length; i++) {
 			HBox questionRow = new HBox(10);
-			choiceText[i].setText(currQuestion.getChoices().get(i).choiceText);// Use getter
+			choiceText[i].setText(currQuestion.getChoices().get(i).getChoiceText());// Use getter
 			choiceIsCorrect[i] = new RadioButton();
 
 			choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with

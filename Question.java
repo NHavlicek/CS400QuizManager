@@ -41,7 +41,7 @@ public class Question {
 	  if (!CHOICES.contains(userAnswer)) { // ensure answer is in arraylist (should be)
 		  return false;
 	  } else {
-		  return CHOICES.get(CHOICES.indexOf(userAnswer)).isCorrectChoice; // return correct choice or not
+		  return CHOICES.get(CHOICES.indexOf(userAnswer)).getIsCorrect(); // return correct choice or not
 	  }
   }
   

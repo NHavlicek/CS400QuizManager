@@ -9,8 +9,8 @@ package application;
  * Is a choice for a question
  */
 public class AnswerChoice {
-  final String choiceText;
-  final boolean isCorrectChoice;
+  private final String choiceText;
+  private final boolean isCorrectChoice;
 
   /**
    * Sets up a choice for the question
@@ -21,5 +21,14 @@ public class AnswerChoice {
   public AnswerChoice(String choiceText, boolean isCorrectChoice) {
     this.choiceText = choiceText;
     this.isCorrectChoice = isCorrectChoice;
+  }
+  
+  //Returns true if choice is correct answer
+  public boolean getIsCorrect() {
+	  return isCorrectChoice;
+  }
+  
+  public String getChoiceText() {
+	  return choiceText;
   }
 }
