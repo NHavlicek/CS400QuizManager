@@ -1,6 +1,7 @@
 package application;
 
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -36,10 +37,10 @@ public class ConfirmationUponExitGUI extends BorderPane {
     exitNoSaveButton.setOnAction(e -> {
       primaryStage.close();
     });
-    Button saveAndExitButton = new Button("Save and exit");
+    Button saveAndExitButton = new Button("Save");
     saveAndExitButton.setOnAction(e -> {
-      // TODO save
-      primaryStage.close();
+    	
+      primaryStage.setScene(main.saveScreen);;
     });
     confirmExitButtons.getChildren().addAll(saveAndExitButton, exitNoSaveButton);
 
