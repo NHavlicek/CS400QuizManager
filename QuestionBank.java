@@ -35,7 +35,7 @@ public class QuestionBank {
   /*
    * Load all the questions to the database
    */
-  public void loadQuestions(String filepath) throws IOException, ParseException {
+  public void loadQuestions(String filepath, Main main) throws IOException, ParseException {
 
     System.out.println("start loading");
 
@@ -76,6 +76,8 @@ public class QuestionBank {
       }
       Question newQuestion = new Question(questionText, questionTopic, choices, image);
       questionBank.add(newQuestion);
+      if (!main.totalTopicsList.contains(questionTopic)) 
+        main.totalTopicsList.add(questionTopic);
       totalNumQuestions++;
     }
   }
