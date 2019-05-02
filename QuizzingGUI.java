@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -24,6 +25,9 @@ import javafx.stage.Stage;
  * GUI which quizzes the user
  */
 public class QuizzingGUI extends BorderPane {
+	int currentQuestionNumber = 1;
+	Text previousQuestionCorrect;
+	Text previousQuestionIncorrect;
 	Button submitAnswer;
 	Label questionBodyLabel;
 	Label questionTopicLabel;
@@ -32,7 +36,6 @@ public class QuizzingGUI extends BorderPane {
 	ToggleGroup tg;
 	ImageView questionImageLocation;
 	Image questionImage;
-	// TODO image
 
 	/**
 	 * Sets up the GUI for Quizzing screen
@@ -46,17 +49,27 @@ public class QuizzingGUI extends BorderPane {
 		// return home button
 		VBox topSide = new VBox(0);
 		topSide.setPadding(main.buttonSpacing);
+		
+		// previous question correctness
+		previousQuestionCorrect = new Text("Answer was correct!");
+		previousQuestionCorrect.setFill(Color.GREEN);
+		previousQuestionIncorrect = new Text("Answer was incorrect.");
+		previousQuestionIncorrect.setFill(Color.RED);
+		previousQuestionCorrect.setVisible(false);
+		previousQuestionIncorrect.setVisible(false);
 
 		// question info input
 		questionImageLocation = new ImageView();
 		questionImageLocation.setFitHeight(200);
 		questionImageLocation.setFitWidth(200);
-		questionBodyLabel = new Label("Question: ");
+		questionBodyLabel = new Label("Question " + currentQuestionNumber + ": ");
 		questionTopicLabel = new Label("Topic: ");
 		
 		topSide.getChildren().add(questionImageLocation);
 		topSide.getChildren().add(questionBodyLabel);
 		topSide.getChildren().add(questionTopicLabel);
+		topSide.getChildren().add(previousQuestionCorrect);
+		topSide.getChildren().add(previousQuestionIncorrect);
 
 		// question options
 		VBox midPart = new VBox(5);
@@ -89,6 +102,11 @@ public class QuizzingGUI extends BorderPane {
 			if (answer != null) {
 				if (main.currQuiz.checkAnswer(answer)) {
 					main.currQuiz.numCorrect++;
+					previousQuestionCorrect.setVisible(true);
+					previousQuestionIncorrect.setVisible(false);
+				} else {
+					previousQuestionCorrect.setVisible(false);
+					previousQuestionIncorrect.setVisible(true);
 				}
 				if (main.currQuiz.quizOver()) {
 					Alert totalScore = new Alert(AlertType.INFORMATION);
@@ -135,6 +153,7 @@ public class QuizzingGUI extends BorderPane {
 		// update the fields (e.g. choice1Text, question body, etc);
 		questionBodyLabel.setText("Question: " + currQuestion.getQuestionText()); // Make These to get methods
 		questionTopicLabel.setText("Topic: " + currQuestion.getTopic());
+		currentQuestionNumber++; // increment the display for the current question upon advancing questions
 
 		if (tg.getSelectedToggle() != null) {
 		  tg.getSelectedToggle().setSelected(false);
