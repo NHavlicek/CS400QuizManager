@@ -116,6 +116,8 @@ public class QuizzingGUI extends BorderPane {
 									+ (int) main.currQuiz.numCorrect / main.currQuiz.numQuestions*100 + "%)");
 					totalScore.showAndWait();
 					primaryStage.setScene(main.home);
+					previousQuestionCorrect.setVisible(false);
+					previousQuestionIncorrect.setVisible(false);
 				} else {
 					updateFields(main.currQuiz.getNextQuestion());
 				}
