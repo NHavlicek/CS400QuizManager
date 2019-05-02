@@ -14,120 +14,124 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * Filename: QuizzingGUI.java Project: A-Team Quiz Application Team: A-Team 27 Authors: Nicholas
- * Havlicek, Murad Jaber, Kevin Kim, Spencer Runde, Dung Vo
+ * Filename: QuizzingGUI.java Project: A-Team Quiz Application Team: A-Team 27
+ * Authors: Nicholas Havlicek, Murad Jaber, Kevin Kim, Spencer Runde, Dung Vo
  * 
  * GUI which quizzes the user
  */
 public class QuizzingGUI extends BorderPane {
-  Button submitAnswer;
-  Label questionBodyLabel;
-  Label questionTopicLabel;
-  RadioButton[] choiceIsCorrect;
-  Label[] choiceText;
-  ToggleGroup tg;
-  // TODO image
+	Button submitAnswer;
+	Label questionBodyLabel;
+	Label questionTopicLabel;
+	RadioButton[] choiceIsCorrect;
+	Label[] choiceText;
+	ToggleGroup tg;
+	// TODO image
 
-  /**
-   * Sets up the GUI for Quizzing screen
-   * 
-   * @param main         Instance of the Main class which controls the GUIs and is the "Main" class
-   * @param primaryStage The primary stage for the main GUI
-   */
-  public QuizzingGUI(Main main, Stage primaryStage) {
+	/**
+	 * Sets up the GUI for Quizzing screen
+	 * 
+	 * @param main         Instance of the Main class which controls the GUIs and is
+	 *                     the "Main" class
+	 * @param primaryStage The primary stage for the main GUI
+	 */
+	public QuizzingGUI(Main main, Stage primaryStage) {
 
-    // return home button
-    HBox topRow = new HBox(10);
-    VBox topSide = new VBox(0);
-    topSide.setPadding(main.buttonSpacing);
+		// return home button
+		HBox topRow = new HBox(10);
+		VBox topSide = new VBox(0);
+		topSide.setPadding(main.buttonSpacing);
 
-    // question info input
+		// question info input
 
-    questionBodyLabel = new Label("Question: ");
-    questionTopicLabel = new Label("Topic: ");
+		questionBodyLabel = new Label("Question: ");
+		questionTopicLabel = new Label("Topic: ");
 
-    topSide.getChildren().add(questionBodyLabel);
-    topSide.getChildren().add(questionTopicLabel);
+		topSide.getChildren().add(questionBodyLabel);
+		topSide.getChildren().add(questionTopicLabel);
 
-    // question options
-    VBox midPart = new VBox(5);
-    midPart.setPadding(main.buttonSpacing);
+		// question options
+		VBox midPart = new VBox(5);
+		midPart.setPadding(main.buttonSpacing);
 
-    Label selectRightAnswer = new Label("Select Correct Answer: ");
-    midPart.getChildren().add(selectRightAnswer);
+		Label selectRightAnswer = new Label("Select Correct Answer: ");
+		midPart.getChildren().add(selectRightAnswer);
 
-    tg = new ToggleGroup();
-    choiceIsCorrect = new RadioButton[5];
-    choiceText = new Label[5];
-    for (int i = 0; i < 5; i++) {
-      HBox questionRow = new HBox(10);
-      choiceText[i] = new Label("Choice " + (i + 1));
-      choiceIsCorrect[i] = new RadioButton();
+		tg = new ToggleGroup();
+		choiceIsCorrect = new RadioButton[5];
+		choiceText = new Label[5];
+		for (int i = 0; i < 5; i++) {
+			HBox questionRow = new HBox(10);
+			choiceText[i] = new Label("Choice " + (i + 1));
+			choiceIsCorrect[i] = new RadioButton();
 
-      choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with
-      choiceIsCorrect[i].setToggleGroup(tg);
+			choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with
+			choiceIsCorrect[i].setToggleGroup(tg);
 
-      questionRow.getChildren().add(choiceText[i]);
-      questionRow.getChildren().add(choiceIsCorrect[i]);
+			questionRow.getChildren().add(choiceText[i]);
+			questionRow.getChildren().add(choiceIsCorrect[i]);
 
-      midPart.getChildren().add(questionRow);
-    }
+			midPart.getChildren().add(questionRow);
+		}
 
-    // submit question button
-    submitAnswer = new Button("Submit");
-    submitAnswer.setOnAction(e -> {
-      updateFields(main.currQuiz.getCurrQuestion());
-      AnswerChoice answer = getAnswerChoice(main);
+		// submit question button
+		submitAnswer = new Button("Submit");
+		submitAnswer.setOnAction(e -> {
+			updateFields(main.currQuiz.getCurrQuestion());
+			AnswerChoice answer = getAnswerChoice(main);
+			if (answer != null) {
+				if (main.currQuiz.checkAnswer(answer)) {
+					main.currQuiz.numCorrect++;
+				}
+				if (main.currQuiz.quizOver()) {
+					primaryStage.setScene(main.home);
+				} else {
+					updateFields(main.currQuiz.getCurrQuestion());
+				}
+			}
+		});
 
-      if (answer != null && main.currQuiz.checkAnswer(answer)) {
-        System.out.println("Correct!");
-      }
-      // Next Question if answer isn't null
-      // if quiz.isOver, return control to Main.java or a results screen
-      // updateFields(nextQuestion);
-    });
+		setTop(topSide);
+		setCenter(midPart);
+		setBottom(submitAnswer);
 
-    setTop(topSide);
-    setCenter(midPart);
-    setBottom(submitAnswer);
+		// TODO implement
+		// 4. display option for an image
 
-    // TODO implement
-    // 4. display option for an image
+	}
 
-  }
+	private AnswerChoice getAnswerChoice(Main main) {
+		RadioButton button;
+		Quiz quiz = main.currQuiz;
+		ArrayList<Question> questions = quiz.getQuestions();
+		Question question = quiz.getCurrQuestion();
 
-  private AnswerChoice getAnswerChoice(Main main) {
-    RadioButton button;
-    Quiz quiz = main.currQuiz;
-    ArrayList<Question> questions = quiz.getQuestions();
-    Question question = quiz.getCurrQuestion();
+		if (tg.getSelectedToggle() != null) {
+			button = (RadioButton) tg.getSelectedToggle();
+			try {
+				int choice = Integer.parseInt(button.getId());
+				return question.getChoices().get(choice);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		return null;
+	}
 
-    if (tg.getSelectedToggle() != null) {
-      button = (RadioButton) tg.getSelectedToggle();
-      try {
-        int choice = Integer.parseInt(button.getId());
-        return question.getChoices().get(choice);
-      } catch (Exception e) {
-        return null;
-      }
-    }
-    return null;
-  }
+	public void updateFields(Question currQuestion) {
+		// update the fields (e.g. choice1Text, question body, etc);
+		questionBodyLabel.setText("Question: " + currQuestion.getQuestionText()); // Make These to get methods
+		questionTopicLabel.setText("Topic: " + currQuestion.getTopic());
 
-  public void updateFields(Question currQuestion) {
-    // update the fields (e.g. choice1Text, question body, etc);
-    questionBodyLabel.setText("Question: " + currQuestion.getQuestionText()); // Make These to get methods
-    questionTopicLabel.setText("Topic: " + currQuestion.getTopic());
-    
-    tg = new ToggleGroup();
-    for (int i = 0; i < choiceIsCorrect.length; i++) {
-      HBox questionRow = new HBox(10);
-      choiceText[i].setText(currQuestion.getChoices().get(i).choiceText);//Use getter
-      choiceIsCorrect[i] = new RadioButton();
+		tg = new ToggleGroup();
+		for (int i = 0; i < choiceIsCorrect.length; i++) {
+			HBox questionRow = new HBox(10);
+			choiceText[i].setText(currQuestion.getChoices().get(i).choiceText);// Use getter
+			choiceIsCorrect[i] = new RadioButton();
 
-      choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with
-      choiceIsCorrect[i].setToggleGroup(tg);
-    }
-  }
+			choiceIsCorrect[i].setId(i + ""); // Saves which answer it's associated with
+			choiceIsCorrect[i].setToggleGroup(tg);
+		}
+	}
 
 }
