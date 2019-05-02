@@ -38,7 +38,6 @@ public class QuizzingGUI extends BorderPane {
 	public QuizzingGUI(Main main, Stage primaryStage) {
 
 		// return home button
-		HBox topRow = new HBox(10);
 		VBox topSide = new VBox(0);
 		topSide.setPadding(main.buttonSpacing);
 
@@ -77,7 +76,6 @@ public class QuizzingGUI extends BorderPane {
 		// submit question button
 		submitAnswer = new Button("Submit");
 		submitAnswer.setOnAction(e -> {
-			updateFields(main.currQuiz.getCurrQuestion());
 			AnswerChoice answer = getAnswerChoice(main);
 			if (answer != null) {
 				if (main.currQuiz.checkAnswer(answer)) {
@@ -86,7 +84,7 @@ public class QuizzingGUI extends BorderPane {
 				if (main.currQuiz.quizOver()) {
 					primaryStage.setScene(main.home);
 				} else {
-					updateFields(main.currQuiz.getCurrQuestion());
+					updateFields(main.currQuiz.getNextQuestion());
 				}
 			}
 		});
@@ -103,15 +101,11 @@ public class QuizzingGUI extends BorderPane {
 	private AnswerChoice getAnswerChoice(Main main) {
 		RadioButton button;
 		Quiz quiz = main.currQuiz;
-		ArrayList<Question> questions = quiz.getQuestions();
 		Question question = quiz.getCurrQuestion();
 
-		System.out.println("1");
 		if (tg.getSelectedToggle() != null) {
-			System.out.println("2");
 			button = (RadioButton) tg.getSelectedToggle();
 			try {
-				System.out.println("3");
 				int choice = Integer.parseInt(button.getId());
 				return question.getChoices().get(choice);
 			} catch (Exception e) {
@@ -127,9 +121,11 @@ public class QuizzingGUI extends BorderPane {
 		questionBodyLabel.setText("Question: " + currQuestion.getQuestionText()); // Make These to get methods
 		questionTopicLabel.setText("Topic: " + currQuestion.getTopic());
 
-		tg = new ToggleGroup();
+		if (tg.getSelectedToggle() != null) {
+		  tg.getSelectedToggle().setSelected(false);
+		}
+		
 		for (int i = 0; i < choiceIsCorrect.length; i++) {
-			HBox questionRow = new HBox(10);
 			choiceText[i].setText(currQuestion.getChoices().get(i).getChoiceText());// Use getter
 			choiceIsCorrect[i] = new RadioButton();
 
