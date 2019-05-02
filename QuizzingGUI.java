@@ -106,12 +106,16 @@ public class QuizzingGUI extends BorderPane {
 		ArrayList<Question> questions = quiz.getQuestions();
 		Question question = quiz.getCurrQuestion();
 
+		System.out.println("1");
 		if (tg.getSelectedToggle() != null) {
+			System.out.println("2");
 			button = (RadioButton) tg.getSelectedToggle();
 			try {
+				System.out.println("3");
 				int choice = Integer.parseInt(button.getId());
 				return question.getChoices().get(choice);
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 				return null;
 			}
 		}

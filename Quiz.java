@@ -33,7 +33,7 @@ public class Quiz {
 	 * @return
 	 */
 	public boolean quizOver() {
-		return currQuestion == numQuestions;
+		return currQuestion == (numQuestions - 1);
 	}
 	
 	/**
