@@ -46,6 +46,13 @@ public class Main extends Application {
 	public HashSet<String> totalTopicsList = new HashSet<String>(); // all topics among all questions
 	public HashSet<String> selectedTopicsList = new HashSet<String>(); // only topics selected by user
 	public Quiz currQuiz;
+	private HomeScreenGUI homeScreen;
+	private SelectionGUI quizEntry;
+	private ConfirmationUponExitGUI confirmExit;
+	private QuizzingGUI quizMeGUI;
+	private AddQuestionGUI addQ;
+	private SaveGUI saveQuestionsGUI;
+	private LoadGUI loadQuestionsGUI;
 
 	/**
 	 * Creates the main GUI and controls the GUIs
@@ -57,31 +64,31 @@ public class Main extends Application {
 		allQuestions = new QuestionBank(); // initialize the questionBank
 
 		// home screen
-		HomeScreenGUI homeScreen = new HomeScreenGUI(this, primaryStage);
+		homeScreen = new HomeScreenGUI(this, primaryStage);
 		home = new Scene(homeScreen, 400, 400);
 
 		// main quiz screen
-		SelectionGUI quizEntry = new SelectionGUI(this, primaryStage);
+		quizEntry = new SelectionGUI(this, primaryStage);
 		quizHome = new Scene(quizEntry, 400, 400);
 
 		// confirmation upon exit
-		ConfirmationUponExitGUI confirmExit = new ConfirmationUponExitGUI(this, primaryStage);
+		confirmExit = new ConfirmationUponExitGUI(this, primaryStage);
 		confirmationExit = new Scene(confirmExit, 400, 400);
 
 		// GUI during quizzing TODO implement
-		QuizzingGUI quizMeGUI = new QuizzingGUI(this, primaryStage);
+		quizMeGUI = new QuizzingGUI(this, primaryStage);
 		quizzingScreen = new Scene(quizMeGUI, 400, 400);
 
 		// add question screen
-		AddQuestionGUI addQ = new AddQuestionGUI(this, primaryStage);
+		addQ = new AddQuestionGUI(this, primaryStage);
 		addQuestionScreen = new Scene(addQ, 400, 400);
 		
 		// save questions screen
-		SaveGUI saveQuestionsGUI = new SaveGUI(this, primaryStage);
+		saveQuestionsGUI = new SaveGUI(this, primaryStage);
 		saveScreen = new Scene(saveQuestionsGUI, 400, 400);
 		
 		// load questions screen
-		LoadGUI loadQuestionsGUI = new LoadGUI(this, primaryStage);
+		loadQuestionsGUI = new LoadGUI(this, primaryStage);
 		loadScreen = new Scene(loadQuestionsGUI, 400, 400);
 
 		// display the home screen first
@@ -98,6 +105,12 @@ public class Main extends Application {
 		System.out.println("before launch");
 		launch(args);
 		System.out.println("after launch");
+	}
+	
+	public void updateAll() {
+	  homeScreen.updateValue(this);
+	  loadQuestionGUI.updatevalue(this);
+	  quizEntry.updateValue(this);
 	}
 	
 }
