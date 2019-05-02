@@ -19,9 +19,10 @@ import javafx.application.Platform;
 public class HomeScreenGUI extends BorderPane {
   private Text numQuestionsText;
 
-  private void updateValue(Main main) {
+  public void updateValue(Main main) {
     numQuestionsText.setText(
         "Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
+
   }
 
   /**
@@ -45,10 +46,12 @@ public class HomeScreenGUI extends BorderPane {
     Button homescreenLoad = new Button("Load"); // load a questions list
     homescreenLoad.setOnAction(e -> {
       primaryStage.setScene(main.loadScreen);
+      main.updateAll();
     });
     Button addQuestion = new Button("Add Question");
     addQuestion.setOnAction(e -> {
       primaryStage.setScene(main.addQuestionScreen);
+      main.updateAll();
     });
 
     homeScreenOptions.getChildren().addAll(homescreenExit, homescreenSave, homescreenLoad,
@@ -63,6 +66,7 @@ public class HomeScreenGUI extends BorderPane {
     Button selectQuiz = new Button("Select Quiz");
     selectQuiz.setOnAction(e -> {
       primaryStage.setScene(main.quizHome);
+      main.updateAll();
     });
 
     VBox homeScreenWelcome = new VBox(welcome, welcomeSubtext, selectQuiz);
@@ -80,7 +84,6 @@ public class HomeScreenGUI extends BorderPane {
       @Override
       public void run() {
         Runnable updater = new Runnable() {
-
           @Override
           public void run() {
             updateValue(main);
@@ -89,10 +92,9 @@ public class HomeScreenGUI extends BorderPane {
 
         while (true) {
           try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
           } catch (InterruptedException ex) {
           }
-
           // UI update is run on the Application thread
           Platform.runLater(updater);
         }
@@ -101,6 +103,6 @@ public class HomeScreenGUI extends BorderPane {
     });
     thread.setDaemon(true);
     thread.start();
-   }
+  }
 
 }

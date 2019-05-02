@@ -108,12 +108,14 @@ public class SelectionGUI extends BorderPane {
       
       main.selectedTopicsList.add(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
+      updateValue(main);
     });
 
     removeTopic = new Button("Remove Topic");
     removeTopic.setOnAction(e -> {
       main.selectedTopicsList.remove(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
+      updateValue(main);
     });
 
     topicSelectionBox = new VBox();
@@ -127,30 +129,30 @@ public class SelectionGUI extends BorderPane {
     bottomDisplay.getChildren().addAll(numQuestionsText, selectedTopics);
     setBottom(bottomDisplay);
 
-    Thread thread = new Thread(new Runnable() {
-
-      @Override
-      public void run() {
-        Runnable updater = new Runnable() {
-          @Override
-          public void run() {
-            updateValue(main);
-          }
-        };
-
-        while (true) {
-          try {
-            Thread.sleep(100);
-          } catch (InterruptedException ex) {
-          }
-          // UI update is run on the Application thread
-          Platform.runLater(updater);
-        }
-      }
-
-    });
-    thread.setDaemon(true);
-    thread.start();
+//    Thread thread = new Thread(new Runnable() {
+//
+//      @Override
+//      public void run() {
+//        Runnable updater = new Runnable() {
+//          @Override
+//          public void run() {
+//            updateValue(main);
+//          }
+//        };
+//
+//        while (true) {
+//          try {
+//            Thread.sleep(100);
+//          } catch (InterruptedException ex) {
+//          }
+//          // UI update is run on the Application thread
+//          Platform.runLater(updater);
+//        }
+//      }
+//
+//    });
+//    thread.setDaemon(true);
+//    thread.start();
   }
 
 }
