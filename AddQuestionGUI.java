@@ -1,12 +1,18 @@
 package application;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Optional;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,8 +25,9 @@ import javafx.stage.Stage;
  * GUI screen to add a question
  */
 public class AddQuestionGUI extends BorderPane {
-  ToggleGroup tg;
-  TextField[] choiceInput;
+  private ToggleGroup tg;
+  private TextField[] choiceInput;
+  private String imagePath;
 
   /**
    * Sets up the GUI for the Add questions screen
@@ -43,6 +50,34 @@ public class AddQuestionGUI extends BorderPane {
     topRow.getChildren().add(returnToHome);
     topSide.getChildren().add(topRow);
 
+    // Add Image
+    HBox imageRow = new HBox(10);
+    
+    // Image itself
+    ImageView image = new ImageView();
+    image.setFitHeight(200);
+    image.setFitWidth(200);
+    
+    // Button to prompt the user to add it
+    Button addImage = new Button("Add Image");
+    addImage.setOnAction(e -> {
+      // Dialog
+      TextInputDialog dialog = new TextInputDialog("Enter Path");
+      dialog.setTitle("Enter Path");
+      dialog.setHeaderText("Enter Path To An Image");
+      
+      Optional<String> result = dialog.showAndWait();
+      
+      if (result.isPresent()) {
+        imagePath = result.get();
+        image.setImage(new Image(imagePath));
+      }
+    });
+
+    imageRow.getChildren().add(image);
+    imageRow.getChildren().add(addImage);
+    topSide.getChildren().add(imageRow);
+    
     // question info input
     HBox questionInfoBox = new HBox(10);
 
@@ -106,14 +141,24 @@ public class AddQuestionGUI extends BorderPane {
       }
 
       if (questionBody.length() > 0 && topic.length() > 0 && answers.size() == 5) {
-        Question question = new Question(questionBody, topic, answers, null);
+        Question question;
+        if (image.getImage() != null) {
+          question = new Question(questionBody, topic, answers, SwingFXUtils.fromFXImage(image.getImage(), null));
+        } else {
+          question = new Question(questionBody, topic, answers, null);
+        }
+        
         main.totalTopicsList.add(topic);
         main.allQuestions.addQuestion(question);
         
         main.updateAll();
       }
+      
+      // Clean up
+      image.setImage(null);
       questionBodyInput.clear();
       questionTopicInput.clear();
+      
       if (tg.getSelectedToggle() != null) {
         tg.getSelectedToggle().setSelected(false);
       }
