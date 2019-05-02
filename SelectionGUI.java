@@ -76,11 +76,12 @@ public class SelectionGUI extends BorderPane {
 
       if (main.currQuiz != null && main.currQuiz.getQuestions().size() > 0) {
         primaryStage.setScene(main.quizzingScreen);
+        main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
       } else {
         System.out.println("Error: Invalid number of questions: " + selectedNumQuestions);
       }
       
-      main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
+      //main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
     });
 
     centerBox.getChildren().addAll(quizMe, numQuestionsSelectionBox);
