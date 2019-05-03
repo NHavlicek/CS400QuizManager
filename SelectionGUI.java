@@ -35,12 +35,22 @@ public class SelectionGUI extends BorderPane {
   VBox topicSelectionBox;
   VBox bottomDisplay;
   Text numQuestionsText;
+  Text numQuestionsMatchingSelectedTopicsText;
+  int numQuestionsMatchingSelectedTopics = 0;
 
+  /**
+   * changes appropriate displays when actions are taken either here or in other GUIs.  Updated fields are
+   * the displayed topic list (e.g. a question with a new topic is added), the selected topics list (a new
+   * topic is selected or unselected by the user), and the number of questions matching the selected topics 
+   * (when a user adds or removes topics this updates accordingly).
+   * @param main
+   */
   public void updateValue(Main main) {
     List<String> list = new ArrayList<String>();
     list.addAll(main.totalTopicsList);
     ObservableList<String> topicList = FXCollections.observableList(list);
     topics.setItems(topicList);
+    // TODO do we need these next few lines?  
     selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
     topicSelectionBox.getChildren().setAll(topics, addTopic, removeTopic);
     numQuestionsText.setText(
@@ -105,16 +115,17 @@ public class SelectionGUI extends BorderPane {
     }
 
     addTopic = new Button("Add Topic");
-    addTopic.setOnAction(e -> {
-      
+    addTopic.setOnAction(e -> {   
       main.selectedTopicsList.add(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
+      updateMatchingQuestions(main);
     });
 
     removeTopic = new Button("Remove Topic");
     removeTopic.setOnAction(e -> {
       main.selectedTopicsList.remove(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
+      updateMatchingQuestions(main);
     });
 
     topicSelectionBox = new VBox();
@@ -125,10 +136,27 @@ public class SelectionGUI extends BorderPane {
     bottomDisplay = new VBox();
     numQuestionsText = new Text(
         "Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
-    bottomDisplay.getChildren().addAll(numQuestionsText, selectedTopics);
+    numQuestionsMatchingSelectedTopicsText = new Text(
+    		"Current number of questions matching selected topics: " + numQuestionsMatchingSelectedTopics);
+    bottomDisplay.getChildren().addAll(numQuestionsMatchingSelectedTopicsText,
+    		numQuestionsText, selectedTopics);
     setBottom(bottomDisplay);
 
-    
+  }
+  
+  /**
+   * utilizes the findAllQuestionsWithTopic() method in QuestionBank to list the number of questions matching
+   * all the selected topics
+   * @param main instance of the Main class that contains all data structure instances.
+   */
+  private void updateMatchingQuestions(Main main) {
+	  numQuestionsMatchingSelectedTopics = 0;
+	  String[] selectedTopicsArray = main.selectedTopicsList.toArray(new String[0]);
+	  for (String topic : selectedTopicsArray) {
+		  numQuestionsMatchingSelectedTopics+= main.allQuestions.findAllQuestionsWithTopic(topic).size();
+	  }
+	  numQuestionsMatchingSelectedTopicsText.setText("Current number of questions matching selected topics: " + 
+	  numQuestionsMatchingSelectedTopics);
   }
 
 }

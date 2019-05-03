@@ -47,6 +47,7 @@ public class QuestionBank {
 		JSONArray questions = (JSONArray) obj.get("questionArray");
 
 		for (int i = 0; i < questions.size(); i++) {
+			System.out.println("Loading Question " + i);
 			JSONObject jsonQuestion = (JSONObject) questions.get(i);
 			String questionText = (String) jsonQuestion.get("questionText");
 			String questionTopic = (String) jsonQuestion.get("topic");
@@ -70,9 +71,14 @@ public class QuestionBank {
 				isCorrect[1] = isCorrect[1].replace("\"", "");
 
 				choice[1] = choice[1].replace("\"", "");
+				System.out.println("question " + i + " ; choice " + j + " ; " + choice[1] + 
+						" ; correctness " + isCorrect[1]);
 				boolean correctness = false;
-				if (isCorrect[1].equals("T"))
+				if (isCorrect[1].equals("T}")) { // TODO Spencer added the '}' here since it remains in the
+					// choice[1] field.  Could either keep this solution or remove it earlier.
+					System.out.println("Found correct answer for answer " + i + " on question " + i);
 					correctness = true;
+				}
 				choices.add(new AnswerChoice(choice[1], correctness));
 			}
 			Question newQuestion = new Question(questionText, questionTopic, choices, image);
@@ -102,7 +108,7 @@ public class QuestionBank {
 	 * @param topic the topic that we want to find
 	 * @return an arraylist of the matching questions
 	 */
-	private ArrayList<Question> findAllQuestionsWithTopic(String topic) {
+	public ArrayList<Question> findAllQuestionsWithTopic(String topic) {
 		ArrayList<Question> ret = new ArrayList<Question>();
 		for (Question question : questionBank) {
 			if (question.getTopic().equals(topic)) {

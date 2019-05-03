@@ -8,6 +8,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * GUI screen that is used to load questions from a json file.  Only supports input for file paths (no 
+ * file browsing yet).  Called by HomeScreenGUI to load questions, and can return to the HomeScreenGUI 
+ * upon button push.  
+ * @author Spencer Runde, Nick Havlicek, Murad Jaber, Kevin Kim, Dung Vo
+ *
+ */
 public class LoadGUI extends BorderPane {
 
   Label filePathText; // label for the input
@@ -18,6 +25,11 @@ public class LoadGUI extends BorderPane {
   Button load;
   Button returnHome;
 
+  /**
+   * constructor for a loadGUI instance
+   * @param main the instance of Main that runs this program
+   * @param primaryStage the primaryStage of Application in JavaFX
+   */
   public LoadGUI(Main main, Stage primaryStage) {
     filePathText = new Label("Input filepath for load: ");
     invalidInput.setVisible(false);
