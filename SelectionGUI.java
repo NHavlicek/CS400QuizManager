@@ -117,9 +117,11 @@ public class SelectionGUI extends BorderPane {
 
     addTopic = new Button("Add Topic");
     addTopic.setOnAction(e -> {
-      main.selectedTopicsList.add(topics.getValue());
-      selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
-      updateMatchingQuestions(main);
+      if (topics.getValue() != null) {
+        main.selectedTopicsList.add(topics.getValue());
+        selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
+        updateMatchingQuestions(main);
+      }
     });
 
     removeTopic = new Button("Remove Topic");
