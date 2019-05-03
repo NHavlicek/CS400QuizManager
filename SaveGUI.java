@@ -1,5 +1,8 @@
 package application;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,14 +31,17 @@ public class SaveGUI extends BorderPane {
 		save.setOnAction(e -> {
 			try {
 				filepath = filePathInput.getText();
-				System.out.println("DEBUG: filepath: " + filepath);
 				main.allQuestions.saveQuestionsToFile(filepath); // save
 				validFilePath = true; // if reached, no exceptions (go to home menu)
-			} catch (Exception exc) { // TODO more specific exception handling
-				System.out.println("DEBUG: exception in Save");
-				validFilePath = false; // exceptions come from parsing filepath or from filenotfound
-				invalidInput.setVisible(true);
-			}
+			} catch (FileNotFoundException exc) { // TODO more specific exception handling
+        System.out.println("File name not valid");
+        validFilePath = false; 
+        invalidInput.setVisible(true);
+      } catch (IOException exc) {
+        System.out.println("Error in saving file");
+        validFilePath = false; 
+        invalidInput.setVisible(true);
+      }
 			if (validFilePath) {
 				primaryStage.setScene(main.home); // return home if input valid
 			}

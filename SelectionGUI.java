@@ -39,10 +39,11 @@ public class SelectionGUI extends BorderPane {
   int numQuestionsMatchingSelectedTopics = 0;
 
   /**
-   * changes appropriate displays when actions are taken either here or in other GUIs.  Updated fields are
-   * the displayed topic list (e.g. a question with a new topic is added), the selected topics list (a new
-   * topic is selected or unselected by the user), and the number of questions matching the selected topics 
-   * (when a user adds or removes topics this updates accordingly).
+   * changes appropriate displays when actions are taken either here or in other GUIs. Updated
+   * fields are the displayed topic list (e.g. a question with a new topic is added), the selected
+   * topics list (a new topic is selected or unselected by the user), and the number of questions
+   * matching the selected topics (when a user adds or removes topics this updates accordingly).
+   * 
    * @param main
    */
   public void updateValue(Main main) {
@@ -50,7 +51,7 @@ public class SelectionGUI extends BorderPane {
     list.addAll(main.totalTopicsList);
     ObservableList<String> topicList = FXCollections.observableList(list);
     topics.setItems(topicList);
-    // TODO do we need these next few lines?  
+    // TODO do we need these next few lines?
     selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
     topicSelectionBox.getChildren().setAll(topics, addTopic, removeTopic);
     numQuestionsText.setText(
@@ -77,16 +78,16 @@ public class SelectionGUI extends BorderPane {
     quizMe.setOnAction(e -> {
       try {
         selectedNumQuestions = Integer.parseInt(numQuestionsEntry.getText());
-        System.out.println("DEBUG: selected num Questions: " + selectedNumQuestions);
         // generate the quiz (stored as fields in Main.java)
-        main.currQuiz = main.allQuestions.generateQuiz(main.selectedTopicsList, selectedNumQuestions);
-        // ensure quiz has at least one question and was generated 
+        main.currQuiz = main.allQuestions.generateQuiz(main.selectedTopicsList,
+            selectedNumQuestions);
+        // ensure quiz has at least one question and was generated
         if (main.currQuiz != null && main.currQuiz.getQuestions().size() > 0) {
-            primaryStage.setScene(main.quizzingScreen);
-            main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
-          } else {
-            System.out.println("Error: Invalid number of questions: " + selectedNumQuestions);
-          }
+          primaryStage.setScene(main.quizzingScreen);
+          main.quizMeGUI.updateFields(main.currQuiz.getCurrQuestion());
+        } else {
+          System.out.println("Error: Invalid number of questions: " + selectedNumQuestions);
+        }
       } catch (NumberFormatException nE) {
         System.out.println("Please Input a valid number of questions");
       }
@@ -115,7 +116,7 @@ public class SelectionGUI extends BorderPane {
     }
 
     addTopic = new Button("Add Topic");
-    addTopic.setOnAction(e -> {   
+    addTopic.setOnAction(e -> {
       main.selectedTopicsList.add(topics.getValue());
       selectedTopics.setText("Selected Topics: " + main.selectedTopicsList.toString());
       updateMatchingQuestions(main);
@@ -137,26 +138,30 @@ public class SelectionGUI extends BorderPane {
     numQuestionsText = new Text(
         "Current number of questions on file: " + main.allQuestions.getTotalNumQuestions());
     numQuestionsMatchingSelectedTopicsText = new Text(
-    		"Current number of questions matching selected topics: " + numQuestionsMatchingSelectedTopics);
-    bottomDisplay.getChildren().addAll(numQuestionsMatchingSelectedTopicsText,
-    		numQuestionsText, selectedTopics);
+        "Current number of questions matching selected topics: "
+            + numQuestionsMatchingSelectedTopics);
+    bottomDisplay.getChildren().addAll(numQuestionsMatchingSelectedTopicsText, numQuestionsText,
+        selectedTopics);
     setBottom(bottomDisplay);
 
   }
-  
+
   /**
-   * utilizes the findAllQuestionsWithTopic() method in QuestionBank to list the number of questions matching
-   * all the selected topics
+   * utilizes the findAllQuestionsWithTopic() method in QuestionBank to list the number of questions
+   * matching all the selected topics
+   * 
    * @param main instance of the Main class that contains all data structure instances.
    */
   private void updateMatchingQuestions(Main main) {
-	  numQuestionsMatchingSelectedTopics = 0;
-	  String[] selectedTopicsArray = main.selectedTopicsList.toArray(new String[0]);
-	  for (String topic : selectedTopicsArray) {
-		  numQuestionsMatchingSelectedTopics+= main.allQuestions.findAllQuestionsWithTopic(topic).size();
-	  }
-	  numQuestionsMatchingSelectedTopicsText.setText("Current number of questions matching selected topics: " + 
-	  numQuestionsMatchingSelectedTopics);
+    numQuestionsMatchingSelectedTopics = 0;
+    String[] selectedTopicsArray = main.selectedTopicsList.toArray(new String[0]);
+    for (String topic : selectedTopicsArray) {
+      numQuestionsMatchingSelectedTopics += main.allQuestions.findAllQuestionsWithTopic(topic)
+          .size();
+    }
+    numQuestionsMatchingSelectedTopicsText
+        .setText("Current number of questions matching selected topics: "
+            + numQuestionsMatchingSelectedTopics);
   }
 
 }

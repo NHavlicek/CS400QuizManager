@@ -23,9 +23,9 @@ import javafx.stage.Stage;
  * Filename: QuizzingGUI.java Project: A-Team Quiz Application Team: A-Team 27 Authors: Nicholas
  * Havlicek, Murad Jaber, Kevin Kim, Spencer Runde, Dung Vo
  * 
- * GUI which quizzes the user.  Utilizes the QuestionBank from main to obtain Questions.  Screens are 
- * "advanced" by calling the next Question in the Quiz and updating all relevant fields (question text, 
- * answers, correctness, etc).
+ * GUI which quizzes the user. Utilizes the QuestionBank from main to obtain Questions. Screens are
+ * "advanced" by calling the next Question in the Quiz and updating all relevant fields (question
+ * text, answers, correctness, etc).
  */
 public class QuizzingGUI extends BorderPane {
   int currentQuestionNumber = 1;
@@ -65,6 +65,7 @@ public class QuizzingGUI extends BorderPane {
     questionImageLocation.setFitHeight(200);
     questionImageLocation.setFitWidth(200);
     questionBodyLabel = new Label("Question " + currentQuestionNumber + ": ");
+    questionBodyLabel.setWrapText(true);
     questionTopicLabel = new Label("Topic: ");
 
     topSide.getChildren().add(questionImageLocation);
@@ -161,9 +162,12 @@ public class QuizzingGUI extends BorderPane {
     } else {
       questionImageLocation.setVisible(false);
     }
-    questionBodyLabel.setText("Question " + + currentQuestionNumber + ": " + 
-    		currQuestion.getQuestionText()); // Make These to get
-                                                                              // methods
+    questionBodyLabel
+        .setText("Question " + +currentQuestionNumber + ": " + currQuestion.getQuestionText()); // Make
+                                                                                                // These
+                                                                                                // to
+                                                                                                // get
+                                                                                                // methods
     questionTopicLabel.setText("Topic: " + currQuestion.getTopic());
     currentQuestionNumber++; // increment the display for the current question upon advancing
                              // questions
