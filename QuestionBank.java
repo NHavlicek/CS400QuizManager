@@ -1,3 +1,32 @@
+//////////////////// ALL ASSIGNMENTS INCLUDE THIS SECTION /////////////////////
+//
+// Title: Final Project: QuizManager
+//
+// Files: Main.java, AddQuestion.java, AnswerChoice.java, 
+//    ConfimationUponExitGUI.java, HomeScreen.java, LoadGUI.java, Question.java
+//    QuestionBank.java, Quiz.java, QuizzingGUI, SaveGUI.java, SelectionGUI.java
+//    application.css
+//
+// Course: CS 400 Spring 2019
+//
+// Author: Dung Vo, Murad Jaber, Nick Havlicek, Kevin Kim, Spencer Runde
+// Email: dvo2@wisc.edu, mjaber2@wisc.edu, nhavlicek@wisc.edu, runde3@wisc.edu
+//        kkim434@wisc.edu
+// Lecturer's Name: Andrew Kuemmel, Debra Deppler
+//
+///////////////////////////// CREDIT OUTSIDE HELP /////////////////////////////
+//
+// Students who get help from sources other than their partner must fully
+// acknowledge and credit those sources of help here. Instructors and TAs do
+// not need to be credited here, but tutors, friends, relatives, room mates,
+// strangers, and others do. If you received no outside help from either type
+// of source, then please explicitly indicate NONE.
+//
+// Persons: N/A
+// Online Sources: N/A
+//
+/////////////////////////////// 80 COLUMNS WIDE ///////////////////////////////
+
 package application;
 
 import java.io.File;
@@ -43,6 +72,7 @@ public class QuestionBank {
     JSONObject obj = (JSONObject) tempObj;
     JSONArray questions = (JSONArray) obj.get("questionArray");
 
+    //Loops through the questionArray creating new questions
     for (int i = 0; i < questions.size(); i++) {
       JSONObject jsonQuestion = (JSONObject) questions.get(i);
       String questionText = (String) jsonQuestion.get("questionText");
@@ -56,7 +86,8 @@ public class QuestionBank {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         image = ImageIO.read(inputFile);
       }
-
+      
+      //Loops through choices adding them to question object
       JSONArray questionChoices = (JSONArray) jsonQuestion.get("choiceArray");
       List<AnswerChoice> choices = new ArrayList<AnswerChoice>();
       for (int j = 0; j < questionChoices.size(); j++) {
